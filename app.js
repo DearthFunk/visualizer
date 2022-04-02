@@ -7,6 +7,13 @@ window.onkeydown = windowKeyDownEventHandler;
 
 const canvas = document.getElementById("animation-canvas");
 let canvasCtx = canvas.getContext("2d");
+/* Used to reset everything on animation change. Prevents the following
+ *  - animation 1 sets stroke width to 10
+ *  - user changes animation
+ *  - animation 2 now renders with stroke width 10
+ *  - (when you don't want it too)
+ */
+canvasCtx.save();
 let audio;
 let state = new State();
 let animations = new Animations();
@@ -38,6 +45,11 @@ function initializeAudioInput(event) {
     .then(drawAnimation); //kick off the animation
 }
 
+function resetCanvasContext() {
+  canvasCtx.restore();
+  canvasCtx.save();
+}
+
 function windowResizeEventHandler() {
   let canvasWidth = window.innerWidth;
   let canvasHeight = window.innerHeight;
@@ -49,9 +61,11 @@ function windowResizeEventHandler() {
 function windowKeyDownEventHandler(event) {
   switch (event.key) {
     case "ArrowRight":
+      resetCanvasContext();
       animations.next();
       break;
     case "ArrowLeft":
+      resetCanvasContext();
       animations.previous();
       break;
   }
