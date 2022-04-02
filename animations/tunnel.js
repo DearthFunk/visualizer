@@ -15,7 +15,7 @@ export default class Tunnel {
     for (let index = 0; index < this.lines.length + 1; index++) {
       if (this.lines[index]) {
         this.lines[index].r +=
-          Math.round(this.speed * 10) / 10 +
+          Math.round(this.speed) +
           Math.pow(this.lines[index].r, 2) / 20000 +
           db / 3;
         ctx.beginPath();

@@ -74,5 +74,9 @@ function windowKeyDownEventHandler(event) {
 function drawAnimation() {
   requestAnimationFrame(drawAnimation);
   audio.updateDataArray();
-  animations.currentAnimation.draw(canvasCtx, state, audio.dataArray);
+
+  if (audio.dataArray) {
+    //TODO: this not data check should not be needed?
+    animations.currentAnimation.draw(canvasCtx, state, audio.dataArray);
+  }
 }
