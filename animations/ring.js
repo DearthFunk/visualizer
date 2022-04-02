@@ -20,7 +20,6 @@ export default class Ring {
   draw(ctx, state) {
     ctx.clearRect(0, 0, state.w, state.h);
     ctx.fillStyle = "#FFFFFF";
-    ctx.strokeStyle = "rgba(255, 0, 0, 0.5)";
     this.ringClusterAngle += 0.00005; //TODO: interaction = state.mouseDistanceFromCenter / 20000;
 
     for (let cluster = 0; cluster < this.ringTotalClusters; cluster++) {
@@ -69,7 +68,6 @@ export default class Ring {
             true
           );
           ctx.fill();
-          ctx.stroke();
           ctx.closePath();
         }
       }
