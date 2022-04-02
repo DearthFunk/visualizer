@@ -9,18 +9,14 @@ export default class AudioInput {
 
   constructor() {
     this.audioContext = new AudioContext();
-    this.start_microphone = this.start_microphone.bind(this);
-    this.process_audio_data = this.process_audio_data.bind(this);
+    this.setup_microphone_stream = this.setup_microphone_stream.bind(this);
   }
 
-  process_audio_data() {
-    if (!this.analyser) {
-      return;
-    }
+  updateDataArray() {
     this.analyser.getByteTimeDomainData(this.dataArray);
   }
 
-  start_microphone(stream) {
+  setup_microphone_stream(stream) {
     this.gain_node = this.audioContext.createGain();
     this.microphone_stream = this.audioContext.createMediaStreamSource(stream);
     this.microphone_stream.connect(this.gain_node);
@@ -29,12 +25,5 @@ export default class AudioInput {
     this.analyser.fftSize = 2048;
     this.gain_node.connect(this.analyser);
     this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
-
-    // --- enable volume control for output speakers
-    document.getElementById("volume").addEventListener("change", function () {
-      var curr_volume = this.value;
-      this.gain_node.gain.value = curr_volume;
-      console.log("curr_volume ", curr_volume);
-    });
   }
 }

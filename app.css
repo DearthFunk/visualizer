@@ -1,12 +1,10 @@
 * {
   margin: 0;
   padding: 0;
+  font-family: "Amatic SC", cursive;
 }
 body {
-  font-family: "Philosopher", sans-serif;
   overflow: hidden;
-  width: 100vw;
-  height: 100vh;
   background-color: black;
 }
 
@@ -15,13 +13,18 @@ body {
   height: 100%;
 }
 
-.audio-input-initializer {
-  color: white;
-  width: 100vw;
-  height: 100vh;
+.menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
   position: absolute;
-  text-align: center;
+  width: 100vw;
+}
+.menu button {
+  background-color: transparent;
+  color: white;
   font-size: 50px;
   cursor: pointer;
-  margin-top: 100px;
+  border: none;
 }

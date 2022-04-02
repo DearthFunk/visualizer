@@ -1,68 +1,64 @@
-import Ring from "./animations/ring.service.js";
+import Animations from "./animations.js";
 import AudioInput from "./audio-input.js";
 import State from "./state.js";
 
-window.addEventListener("resize", Resize_Event_Handler, true);
-window.addEventListener("keydown", Keydown_Event_Handler, true);
+window.onresize = windowResizeEventHandler;
+window.onkeydown = windowKeyDownEventHandler;
 
 const canvas = document.getElementById("animation-canvas");
 let canvasCtx = canvas.getContext("2d");
-let canvasWidth = 0;
-let canvasHeight = 0;
-let currentAnimation = new Ring();
-let state = new State();
 let audio;
-let activator = document.getElementById("audio-input-initializer");
-activator.onclick = Initialize_Audio_Input;
+let state = new State();
+let animations = new Animations();
 
-Resize_Event_Handler(); // trigger to get starting values
+document.getElementById("audio-input-initializer").onclick =
+  initializeAudioInput;
+
+// trigger to set attr's
+windowResizeEventHandler();
 
 //-------------------------//
 
-async function Initialize_Audio_Input(event) {
+function initializeAudioInput(event) {
+  audio = new AudioInput();
+
+  //hide the button
   let elem = event.currentTarget;
   elem.style.display = "none";
-  audio = new AudioInput();
-  await navigator.getUserMedia(
-    { audio: true },
-    audio.start_microphone,
-    function (e) {
-      alert("Error capturing audio.");
-    }
-  );
 
-  DrawAnimation(); // kick off the animation using requestAnimationFrame
-  NextAnimation(); // todo: just added this to set the composite value, should be handled via some initializer
+  /* TODO
+   * in reality.. some animations will not require audio input (ie. ring)
+   * so audio input initialization should be animation dependent, that goes for
+   * updating the globalCompositeOperation value as well
+   */
+
+  navigator.mediaDevices
+    .getUserMedia({ audio: true })
+    .then(audio.setup_microphone_stream)
+    .then(drawAnimation); //kick off the animation
 }
 
-function Resize_Event_Handler() {
-  canvasWidth = window.innerWidth;
-  canvasHeight = window.innerHeight;
+function windowResizeEventHandler() {
+  let canvasWidth = window.innerWidth;
+  let canvasHeight = window.innerHeight;
   canvas.width = canvasWidth;
   canvas.height = canvasHeight;
   state.update(canvasWidth, canvasHeight);
 }
 
-function Keydown_Event_Handler(event) {
+function windowKeyDownEventHandler(event) {
   switch (event.key) {
     case "ArrowRight":
-      NextAnimation();
+      animations.next();
       break;
     case "ArrowLeft":
-      PreviousAnimation();
+      animations.previous();
       break;
   }
 }
 
-function NextAnimation() {
-  //TODO: this should change with each animation... meaning we need a mapping
-  canvasCtx.globalCompositeOperation = "lighter";
-}
-
-function PreviousAnimation() {}
-
-function DrawAnimation() {
-  requestAnimationFrame(DrawAnimation);
-  currentAnimation.draw(canvasCtx, state);
-  audio.process_audio_data();
+function drawAnimation() {
+  requestAnimationFrame(drawAnimation);
+  audio.updateDataArray();
+  animations.currentAnimation.draw(canvasCtx, state, audio.dataArray);
 }
