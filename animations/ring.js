@@ -1,6 +1,9 @@
 import randomNumber from "../random-number.js";
+import { getAverageVolume } from "../get-average-db.js";
+import { fadeCanvas } from "../fade-canvas.js";
 
 export default class Ring {
+  analyserFunction = "getByteFrequencyData";
   constructor() {
     this.ringClusterAngle = 0;
     this.ringDots = [];
@@ -11,17 +14,18 @@ export default class Ring {
   _ringdot() {
     return {
       r: randomNumber(2, 10),
-      speed: randomNumber(0, 0.04),
-      orbit: Math.random() * 10,
+      speed: randomNumber(0.01, 0.04),
+      orbit: Math.random() * 11,
       angle: 0,
     };
   }
 
-  draw(ctx, state) {
-    ctx.clearRect(0, 0, state.w, state.h);
+  draw(ctx, state, data) {
+    fadeCanvas(ctx, state);
     ctx.fillStyle = "#FFFFFF";
     this.ringClusterAngle += 0.00005; //TODO: interaction = state.mouseDistanceFromCenter / 20000;
 
+    let db = getAverageVolume(data);
     for (let cluster = 0; cluster < this.ringTotalClusters; cluster++) {
       let clusterA = (cluster / this.ringTotalClusters) * 2 * Math.PI;
       let clusterX =
@@ -52,8 +56,8 @@ export default class Ring {
         }
 
         let dot = this.ringDots[cluster][i];
-        dot.r -= 0.01; //TODO: interaction = 5 / state.mouseDistanceFromCenter;
-        dot.angle += dot.speed;
+        dot.r -= 0.02;
+        dot.angle += dot.speed * (db / 70);
 
         if (dot.r < 0) {
           this.ringDots[cluster][i] = this._ringdot();

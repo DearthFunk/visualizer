@@ -1,5 +1,5 @@
 import { getAverageVolume } from "../get-average-db.js";
-export default class Tunnel {
+export default class Wobble {
   lines = [{ r: 0 }, { r: 8 }];
   color = "#FFFFFF";
   speed = 1;

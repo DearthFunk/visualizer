@@ -12,8 +12,9 @@ export default class AudioInput {
     this.setup_microphone_stream = this.setup_microphone_stream.bind(this);
   }
 
-  updateDataArray() {
-    this.analyser.getByteTimeDomainData(this.dataArray);
+  updateDataArray({ analyserFunction = "getByteTimeDomainData" }) {
+    //TODO: no string ref, set function ref on animation change
+    this.analyser[analyserFunction](this.dataArray);
   }
 
   setup_microphone_stream(stream) {

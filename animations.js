@@ -1,8 +1,8 @@
 import FrequencyScope from "./animations/frequency-scope.js";
 import Ring from "./animations/ring.js";
-import Tunnel from "./animations/tunnel.js";
+import Wobble from "./animations/wobble.js";
 export default class Animations {
-  set = [new Ring(), new FrequencyScope(), new Tunnel()];
+  set = [new Ring(), new FrequencyScope(), new Wobble()];
   currentIndex = 0;
 
   get currentAnimation() {
