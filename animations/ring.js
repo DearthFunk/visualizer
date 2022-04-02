@@ -1,6 +1,4 @@
-import randomNumber from "../random-number.js";
-import { getAverageVolume } from "../get-average-db.js";
-import { fadeCanvas } from "../fade-canvas.js";
+import { randomNumber, getAverageVolume, fadeCanvas } from "../globals.js";
 
 export default class Ring {
   analyserFunction = "getByteFrequencyData";

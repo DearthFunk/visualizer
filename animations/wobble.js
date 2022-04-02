@@ -1,4 +1,4 @@
-import { getAverageVolume } from "../get-average-db.js";
+import { getAverageVolume } from "../globals.js";
 export default class Wobble {
   lines = [{ r: 0 }, { r: 8 }];
   color = "#FFFFFF";

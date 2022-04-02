@@ -1,8 +1,18 @@
 import FrequencyScope from "./animations/frequency-scope.js";
+import ParticleRing from "./animations/particle-ring.js";
+import RedElectricity from "./animations/red-electricity.js";
+import LineConnections from "./animations/line-connections.js";
 import Ring from "./animations/ring.js";
 import Wobble from "./animations/wobble.js";
 export default class Animations {
-  set = [new Ring(), new FrequencyScope(), new Wobble()];
+  set = [
+    new FrequencyScope(),
+    new Ring(),
+    new Wobble(),
+    new LineConnections(),
+    new ParticleRing(),
+    new RedElectricity(),
+  ];
   currentIndex = 0;
 
   get currentAnimation() {
