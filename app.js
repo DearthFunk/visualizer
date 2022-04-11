@@ -1,10 +1,6 @@
 import Animations from "./animations.js";
 import AudioInput from "./audio-input.js";
 
-window.onresize = windowResizeEventHandler;
-window.onkeydown = windowKeyDownEventHandler;
-
-let padding = 200;
 const canvas = document.getElementById("animation-canvas");
 let canvasCtx = canvas.getContext("2d");
 /* Used to reset everything on animation change. Prevents the following
@@ -15,19 +11,16 @@ let canvasCtx = canvas.getContext("2d");
  */
 canvasCtx.save();
 let audio;
-let animations = new Animations();
+let animations = new Animations("animation-canvas");
 
+//bind initialization of the audio to a user action
 document.getElementById("audio-input-initializer").onclick =
   initializeAudioInput;
 
-// trigger to set attr's
-windowResizeEventHandler();
-
 //-------------------------//
 
-function initializeAudioInput(event) {
+async function initializeAudioInput(event) {
   audio = new AudioInput();
-
   //hide the button
   let elem = event.currentTarget;
   elem.style.display = "none";
@@ -38,47 +31,21 @@ function initializeAudioInput(event) {
    * updating the globalCompositeOperation value as well
    */
 
-  navigator.mediaDevices
-    .getUserMedia({ audio: true })
-    .then(audio.setup_microphone_stream)
-    .then(drawAnimation); //kick off the animation
-}
+  // trigger to set attr's
+  animations.windowResizeEventHandler();
 
-function resetCanvasContext() {
-  canvasCtx.restore();
-  canvasCtx.save();
-}
-
-function windowResizeEventHandler() {
-  let canvasWidth = window.innerWidth;
-  let canvasHeight = window.innerHeight;
-  canvas.width = canvasWidth;
-  canvas.height = canvasHeight;
-  //set props on canvas state to prevent calculations being done in animation request
-  canvas.xCenter = canvasWidth / 2;
-  canvas.yCenter = canvasHeight / 2;
-  canvas.mainRadius = Math.min(canvasWidth, canvasHeight) - padding * 2;
-}
-
-function windowKeyDownEventHandler(event) {
-  switch (event.key) {
-    case "ArrowRight":
-      resetCanvasContext();
-      animations.next();
-      break;
-    case "ArrowLeft":
-      resetCanvasContext();
-      animations.previous();
-      break;
-  }
+  let stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  audio.setup_microphone_stream(stream);
+  //start animation draw which is recursive
+  drawAnimation();
 }
 
 function drawAnimation() {
   requestAnimationFrame(drawAnimation);
-  audio.updateDataArray(animations.currentAnimation);
+  audio.updateDataArray(animations.current);
 
   if (audio.dataArray) {
     //TODO: this not data check should not be needed?
-    animations.currentAnimation.draw(canvasCtx, audio.dataArray);
+    animations.current.draw(canvasCtx, audio.dataArray);
   }
 }
