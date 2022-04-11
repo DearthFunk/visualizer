@@ -4,9 +4,9 @@ export default class Wobble {
   color = "#FFFFFF";
   speed = 1;
 
-  draw(ctx, state, data) {
+  draw(ctx, data) {
     ctx.strokeStyle = this.color;
-    ctx.clearRect(0, 0, state.w, state.h);
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     let nextIndex = false;
     let db = getAverageVolume(data);
 
@@ -21,8 +21,8 @@ export default class Wobble {
         ctx.beginPath();
 
         ctx.arc(
-          state.xCenter,
-          state.yCenter,
+          ctx.canvas.xCenter,
+          ctx.canvas.yCenter,
           this.lines[index].r,
           0,
           2 * Math.PI,
@@ -39,7 +39,7 @@ export default class Wobble {
       }
     }
     for (let index = 0; index < this.lines.length; index++) {
-      if (this.lines[index].r > state.xCenter + 60) {
+      if (this.lines[index].r > ctx.canvas.xCenter + 60) {
         this.lines.splice(index, 1);
       }
     }

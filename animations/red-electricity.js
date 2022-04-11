@@ -25,9 +25,9 @@ export default class RedElectricity {
     }
   }
 
-  draw(ctx, state, data) {
+  draw(ctx, data) {
     //partial erase
-    let oldArray = ctx.getImageData(0, 0, state.w, state.h);
+    let oldArray = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
     for (let d = 3; d < oldArray.data.length; d += 4) {
       //count through only the alpha pixels
       //dim it with some feedback
@@ -36,8 +36,8 @@ export default class RedElectricity {
     ctx.putImageData(oldArray, 0, 0);
 
     let db = getAverageVolume(data);
-    let w = state.w - this.screenPadding * 2;
-    let h = state.h - this.screenPadding * 2;
+    let w = ctx.canvas.width - this.screenPadding * 2;
+    let h = ctx.canvas.height - this.screenPadding * 2;
     for (let i = 0; i < this.galaxyStars.length; i++) {
       let star = this.galaxyStars[i];
       star.angle += star.speed;

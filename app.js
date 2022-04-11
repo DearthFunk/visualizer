@@ -1,10 +1,10 @@
 import Animations from "./animations.js";
 import AudioInput from "./audio-input.js";
-import State from "./state.js";
 
 window.onresize = windowResizeEventHandler;
 window.onkeydown = windowKeyDownEventHandler;
 
+let padding = 200;
 const canvas = document.getElementById("animation-canvas");
 let canvasCtx = canvas.getContext("2d");
 /* Used to reset everything on animation change. Prevents the following
@@ -15,7 +15,6 @@ let canvasCtx = canvas.getContext("2d");
  */
 canvasCtx.save();
 let audio;
-let state = new State();
 let animations = new Animations();
 
 document.getElementById("audio-input-initializer").onclick =
@@ -55,7 +54,10 @@ function windowResizeEventHandler() {
   let canvasHeight = window.innerHeight;
   canvas.width = canvasWidth;
   canvas.height = canvasHeight;
-  state.update(canvasWidth, canvasHeight);
+  //set props on canvas state to prevent calculations being done in animation request
+  canvas.xCenter = canvasWidth / 2;
+  canvas.yCenter = canvasHeight / 2;
+  canvas.mainRadius = Math.min(canvasWidth, canvasHeight) - padding * 2;
 }
 
 function windowKeyDownEventHandler(event) {
@@ -77,6 +79,6 @@ function drawAnimation() {
 
   if (audio.dataArray) {
     //TODO: this not data check should not be needed?
-    animations.currentAnimation.draw(canvasCtx, state, audio.dataArray);
+    animations.currentAnimation.draw(canvasCtx, audio.dataArray);
   }
 }

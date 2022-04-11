@@ -15,9 +15,9 @@ function randomNumber(from, to, decimals) {
     : Number(Math.random() * (to - from) + from);
 }
 
-function fadeCanvas(ctx, state, fadeAmount = 0.9) {
+function fadeCanvas(ctx, fadeAmount = 0.9) {
   //partial erase
-  let oldArray = ctx.getImageData(0, 0, state.w, state.h);
+  let oldArray = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
   for (let d = 3; d < oldArray.data.length; d += 4) {
     //count through only the alpha pixels
     //dim it with some feedback, I'm using .9

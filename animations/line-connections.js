@@ -25,12 +25,12 @@ export default class LineConnections {
     }
   }
 
-  draw(ctx, state, data) {
-    ctx.clearRect(0, 0, state.w, state.h);
+  draw(ctx, data) {
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     let db = getAverageVolume(data);
     ctx.fillStyle = "#FFFFFF";
-    let w = state.w - this.wPadding * 2;
-    let h = state.h - this.hPadding * 2;
+    let w = ctx.canvas.width - this.wPadding * 2;
+    let h = ctx.canvas.height - this.hPadding * 2;
     for (let i = 0; i < this.galaxyStars.length; i++) {
       let star = this.galaxyStars[i];
 

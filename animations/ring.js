@@ -18,8 +18,8 @@ export default class Ring {
     };
   }
 
-  draw(ctx, state, data) {
-    fadeCanvas(ctx, state);
+  draw(ctx, data) {
+    fadeCanvas(ctx);
     ctx.fillStyle = "#FFFFFF";
     this.ringClusterAngle += 0.00005; //TODO: interaction = state.mouseDistanceFromCenter / 20000;
 
@@ -27,23 +27,23 @@ export default class Ring {
     for (let cluster = 0; cluster < this.ringTotalClusters; cluster++) {
       let clusterA = (cluster / this.ringTotalClusters) * 2 * Math.PI;
       let clusterX =
-        ((state.mainRadius * 2) / 3) *
+        ((ctx.canvas.mainRadius * 2) / 3) *
           Math.cos(
             clusterA +
               (cluster % 2 == 0
                 ? this.ringClusterAngle
                 : -1 * this.ringClusterAngle)
           ) +
-        state.xCenter;
+        ctx.canvas.xCenter;
       let clusterY =
-        ((state.mainRadius * 2) / 3) *
+        ((ctx.canvas.mainRadius * 2) / 3) *
           Math.sin(
             clusterA +
               (cluster % 2 == 0
                 ? this.ringClusterAngle
                 : -1 * this.ringClusterAngle)
           ) +
-        state.yCenter;
+        ctx.canvas.yCenter;
 
       if (this.ringDots[cluster] == undefined) {
         this.ringDots.push([]);

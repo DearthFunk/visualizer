@@ -18,9 +18,9 @@ export default class ParticleRing {
     }
   }
 
-  createParticle(state) {
+  createParticle({ xCenter, yCenter }) {
     return {
-      position: { x: state.xCenter, y: state.yCenter },
+      position: { x: xCenter, y: yCenter },
       size: randomNumber(0.01, 1),
       angle: 0,
       speed: 0.05 + Math.random(),
@@ -31,13 +31,13 @@ export default class ParticleRing {
     };
   }
 
-  draw(ctx, state, data) {
-    ctx.clearRect(0, 0, state.w, state.h);
+  draw(ctx, data) {
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     let db = (getAverageVolume(data) * this.dbIntensity) / 10;
     for (let x = 0; x < this.layers; x++) {
       for (let i = 0; i < this.total; i++) {
         if (!this.particles[x][i]) {
-          this.particles[x].push(this.createParticle(state));
+          this.particles[x].push(this.createParticle(ctx.canvas));
         }
         let particle = this.particles[x][i];
 
@@ -52,9 +52,11 @@ export default class ParticleRing {
           particle.orbit * (this.outerRadius - this.innerRadius);
 
         particle.position.x =
-          state.xCenter + Math.cos(i + particle.angle) * (orbit + db / (x + 1));
+          ctx.canvas.xCenter +
+          Math.cos(i + particle.angle) * (orbit + db / (x + 1));
         particle.position.y =
-          state.yCenter + Math.sin(i + particle.angle) * (orbit + db / (x + 1));
+          ctx.canvas.yCenter +
+          Math.sin(i + particle.angle) * (orbit + db / (x + 1));
         ctx.beginPath();
         ctx.fillStyle = particle.fillColor;
 
