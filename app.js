@@ -1,7 +1,5 @@
 import Visualizer from "./visualizer.js";
-import AudioInput from "./audio-input.js";
 
-let audio;
 let visualizer = new Visualizer("visualizer-canvas");
 
 //bind initialization of the audio to a user action
@@ -16,9 +14,7 @@ async function initializeAudioInput(event) {
   elem.style.display = "none";
 
   //setup audio
-  audio = new AudioInput();
-  let stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-  audio.setup_microphone_stream(stream);
+  await visualizer.setupAudio();
 
   //start animation drawing which is recursive
   drawAnimation();
@@ -26,10 +22,10 @@ async function initializeAudioInput(event) {
 
 function drawAnimation() {
   requestAnimationFrame(drawAnimation);
-  audio.updateDataArray(visualizer.animation);
+  visualizer.audio.updateDataArray(visualizer.animation);
 
-  if (audio.dataArray) {
+  if (visualizer.audio.dataArray) {
     //TODO: this not data check should not be needed?
-    visualizer.draw(audio.dataArray);
+    visualizer.draw(visualizer.audio.dataArray);
   }
 }

@@ -4,9 +4,11 @@ import RedElectricity from "./animations/red-electricity.js";
 import LineConnections from "./animations/line-connections.js";
 import Ring from "./animations/ring.js";
 import Wobble from "./animations/wobble.js";
+import AudioInput from "./audio-input.js";
 
 export default class Visualizer {
   canvasPadding = 200;
+  audio;
 
   _currentAnimationIndex = 0;
   _animations = [
@@ -80,5 +82,10 @@ export default class Visualizer {
 
   draw(audioData) {
     this.animation.draw(this.canvasCtx, audioData);
+  }
+
+  async setupAudio() {
+    let stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    this.audio = new AudioInput(stream);
   }
 }

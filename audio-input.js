@@ -6,18 +6,15 @@ export default class AudioInput {
   script_processor_analysis_node = null;
   analyser = null;
   dataArray = [];
-
-  constructor() {
-    this.audioContext = new AudioContext();
-    this.setup_microphone_stream = this.setup_microphone_stream.bind(this);
-  }
+  audioContext;
 
   updateDataArray({ analyserFunction = "getByteTimeDomainData" }) {
     //TODO: no string ref, set function ref on animation change
     this.analyser[analyserFunction](this.dataArray);
   }
 
-  setup_microphone_stream(stream) {
+  constructor(stream) {
+    this.audioContext = new AudioContext();
     this.gain_node = this.audioContext.createGain();
     this.microphone_stream = this.audioContext.createMediaStreamSource(stream);
     this.microphone_stream.connect(this.gain_node);
