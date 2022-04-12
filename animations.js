@@ -21,16 +21,24 @@ export default class Animations {
   constructor(elementID) {
     this.canvas = document.getElementById(elementID);
     this.canvasCtx = this.canvas.getContext("2d");
-    window.onresize = this.windowResizeEventHandler.bind(this);
-    window.onkeydown = this.windowKeyDownEventHandler.bind(this);
+    window.onresize = this._windowResizeEventHandler.bind(this);
+    window.onkeydown = this._windowKeyDownEventHandler.bind(this);
+    this._windowResizeEventHandler();
+
+    /* Used to reset everything on animation change. Prevents the following
+     *  - animation 1 sets stroke width to 10
+     *  - user changes to animation 2, which now renders with stroke width 10
+     *  - works in conjunction with _resetCanvasContext
+     */
+    this.canvasCtx.save();
   }
 
-  resetCanvasContext() {
+  _resetCanvasContext() {
     this.canvasCtx.restore();
     this.canvasCtx.save();
   }
 
-  windowResizeEventHandler() {
+  _windowResizeEventHandler() {
     let canvasWidth = window.innerWidth;
     let canvasHeight = window.innerHeight;
     this.canvas.width = canvasWidth;
@@ -42,14 +50,14 @@ export default class Animations {
       Math.min(canvasWidth, canvasHeight) - this.canvasPadding * 2;
   }
 
-  windowKeyDownEventHandler(event) {
+  _windowKeyDownEventHandler(event) {
     switch (event.key) {
       case "ArrowRight":
-        this.resetCanvasContext();
+        this._resetCanvasContext();
         this.next();
         break;
       case "ArrowLeft":
-        this.resetCanvasContext();
+        this._resetCanvasContext();
         this.previous();
         break;
     }
@@ -67,5 +75,9 @@ export default class Animations {
     this._currentIndex =
       (this._currentIndex + this._animations.length - 1) %
       this._animations.length;
+  }
+
+  draw(audioData) {
+    this.current.draw(this.canvasCtx, audioData);
   }
 }
