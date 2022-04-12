@@ -1,8 +1,8 @@
-import Animations from "./animations.js";
+import Visualizer from "./visualizer.js";
 import AudioInput from "./audio-input.js";
 
 let audio;
-let animations = new Animations("animation-canvas");
+let visualizer = new Visualizer("visualizer-canvas");
 
 //bind initialization of the audio to a user action
 document.getElementById("audio-input-initializer").onclick =
@@ -26,10 +26,10 @@ async function initializeAudioInput(event) {
 
 function drawAnimation() {
   requestAnimationFrame(drawAnimation);
-  audio.updateDataArray(animations.current);
+  audio.updateDataArray(visualizer.animation);
 
   if (audio.dataArray) {
     //TODO: this not data check should not be needed?
-    animations.draw(audio.dataArray);
+    visualizer.draw(audio.dataArray);
   }
 }

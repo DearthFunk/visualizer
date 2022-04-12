@@ -5,10 +5,10 @@ import LineConnections from "./animations/line-connections.js";
 import Ring from "./animations/ring.js";
 import Wobble from "./animations/wobble.js";
 
-export default class Animations {
+export default class Visualizer {
   canvasPadding = 200;
 
-  _currentIndex = 0;
+  _currentAnimationIndex = 0;
   _animations = [
     new FrequencyScope(),
     new Ring(),
@@ -63,21 +63,22 @@ export default class Animations {
     }
   }
 
-  get current() {
-    return this._animations[this._currentIndex];
+  get animation() {
+    return this._animations[this._currentAnimationIndex];
   }
 
   next() {
-    this._currentIndex = (this._currentIndex + 1) % this._animations.length;
+    this._currentAnimationIndex =
+      (this._currentAnimationIndex + 1) % this._animations.length;
   }
 
   previous() {
-    this._currentIndex =
-      (this._currentIndex + this._animations.length - 1) %
+    this._currentAnimationIndex =
+      (this._currentAnimationIndex + this._animations.length - 1) %
       this._animations.length;
   }
 
   draw(audioData) {
-    this.current.draw(this.canvasCtx, audioData);
+    this.animation.draw(this.canvasCtx, audioData);
   }
 }
