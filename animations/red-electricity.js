@@ -1,4 +1,4 @@
-import { randomNumber, getAverageVolume } from "../globals.js";
+import { randomNumber, getAverageVolume, fadeCanvas } from "../globals.js";
 
 export default class RedElectricity {
   analyserFunction = "getByteFrequencyData";
@@ -26,15 +26,7 @@ export default class RedElectricity {
   }
 
   draw(ctx, data) {
-    //partial erase
-    let oldArray = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
-    for (let d = 3; d < oldArray.data.length; d += 4) {
-      //count through only the alpha pixels
-      //dim it with some feedback
-      oldArray.data[d] = Math.floor(oldArray.data[d] * 0.7);
-    }
-    ctx.putImageData(oldArray, 0, 0);
-
+    fadeCanvas(ctx, 0.7);
     let db = getAverageVolume(data);
     let w = ctx.canvas.width - this.screenPadding * 2;
     let h = ctx.canvas.height - this.screenPadding * 2;
