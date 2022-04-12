@@ -1,5 +1,7 @@
 **LIVE: https://dearthfunk.github.io/visualizer/**
 
+_Input Select Example_: https://github.com/webrtc/samples/tree/gh-pages/src/content/devices/input-output
+
 **Running**
 
 1. clone repo

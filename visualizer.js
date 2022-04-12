@@ -89,8 +89,8 @@ export default class Visualizer {
     this.animation.draw(this.canvasCtx, audioData);
   }
 
-  async setupAudio() {
-    let stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  async setupAudio(constraints = { audio: true }) {
+    let stream = await navigator.mediaDevices.getUserMedia(constraints);
     this.audio = new VisualizerAudio(stream);
   }
 

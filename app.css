@@ -1,7 +1,6 @@
 * {
   margin: 0;
   padding: 0;
-  font-family: "Amatic SC", cursive;
 }
 body {
   overflow: hidden;
@@ -20,11 +19,17 @@ body {
   min-height: 100vh;
   position: absolute;
   width: 100vw;
+  flex-direction: column;
+  font-family: "Amatic SC", cursive;
 }
-.menu button {
+.menu h2 {
   background-color: transparent;
   color: white;
   font-size: 50px;
-  cursor: pointer;
   border: none;
+}
+.menu select,
+.meu select option {
+  font-size: 20px;
+  font-family: "revert", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
