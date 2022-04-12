@@ -1,4 +1,4 @@
-export default class AudioInput {
+export default class VisualizerAudioInput {
   BUFF_SIZE_RENDERER = 16384;
   microphone_stream = null;
   gain_node = null;

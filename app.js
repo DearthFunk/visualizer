@@ -6,26 +6,11 @@ let visualizer = new Visualizer("visualizer-canvas");
 document.getElementById("audio-input-initializer").onclick =
   initializeAudioInput;
 
-//-------------------------//
-
-async function initializeAudioInput(event) {
-  //hide the button
-  let elem = event.currentTarget;
-  elem.style.display = "none";
-
-  //setup audio
+async function initializeAudioInput({ currentTarget }) {
+  currentTarget.style.display = "none";
   await visualizer.setupAudio();
 
   //start animation drawing which is recursive
-  drawAnimation();
-}
-
-function drawAnimation() {
-  requestAnimationFrame(drawAnimation);
-  visualizer.audio.updateDataArray(visualizer.animation);
-
-  if (visualizer.audio.dataArray) {
-    //TODO: this not data check should not be needed?
-    visualizer.draw(visualizer.audio.dataArray);
-  }
+  //can be scoped up to intercept animation
+  visualizer.drawAnimation();
 }

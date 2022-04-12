@@ -4,7 +4,7 @@ import RedElectricity from "./animations/red-electricity.js";
 import LineConnections from "./animations/line-connections.js";
 import Ring from "./animations/ring.js";
 import Wobble from "./animations/wobble.js";
-import AudioInput from "./audio-input.js";
+import VisualizerAudio from "./visualizer-audio.js";
 
 export default class Visualizer {
   canvasPadding = 200;
@@ -33,6 +33,11 @@ export default class Visualizer {
      *  - works in conjunction with _resetCanvasContext
      */
     this.canvasCtx.save();
+
+    /* allows for requestAnimationFrame access
+     * alternaive: move drawAnimation up scope 1 level
+     */
+    this.drawAnimation = this.drawAnimation.bind(this);
   }
 
   _resetCanvasContext() {
@@ -86,6 +91,12 @@ export default class Visualizer {
 
   async setupAudio() {
     let stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    this.audio = new AudioInput(stream);
+    this.audio = new VisualizerAudio(stream);
+  }
+
+  drawAnimation() {
+    requestAnimationFrame(this.drawAnimation);
+    this.audio.updateDataArray(this.animation);
+    this.draw(this.audio.dataArray);
   }
 }
