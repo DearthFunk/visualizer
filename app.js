@@ -14,7 +14,7 @@ async function setupAudioInputDeviceSelect() {
   audioInputs.forEach((audioInput) => {
     let selectOption = document.createElement("option");
     selectOption.value = audioInput.deviceId;
-    selectOption.text = audioInput.label;
+    selectOption.text = audioInput.label || 'unknown device name / empty label;';
     audioInputSelect.appendChild(selectOption);
   });
   audioInputSelect.onchange = initializeAudioInput;
